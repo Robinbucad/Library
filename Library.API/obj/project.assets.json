@@ -1027,11 +1027,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.API\\Library.API.csproj",
+      "projectUniqueName": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.API\\Library.API.csproj",
       "projectName": "Library.API",
-      "projectPath": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.API\\Library.API.csproj",
+      "projectPath": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.API\\Library.API.csproj",
       "packagesPath": "C:\\Users\\robin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.API\\obj\\",
+      "outputPath": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\robin\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -7229,11 +7229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.UnitTest\\Library.UnitTest.csproj",
+      "projectUniqueName": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.UnitTest\\Library.UnitTest.csproj",
       "projectName": "Library.UnitTest",
-      "projectPath": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.UnitTest\\Library.UnitTest.csproj",
+      "projectPath": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.UnitTest\\Library.UnitTest.csproj",
       "packagesPath": "C:\\Users\\robin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.UnitTest\\obj\\",
+      "outputPath": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.UnitTest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\robin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7250,8 +7250,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.API\\Library.API.csproj": {
-              "projectPath": "C:\\Users\\robin\\Desktop\\NET\\BooksApp\\Library.API\\Library.API.csproj"
+            "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.API\\Library.API.csproj": {
+              "projectPath": "C:\\Users\\robin\\Desktop\\NET\\Library\\Library.API\\Library.API.csproj"
             }
           }
         }
