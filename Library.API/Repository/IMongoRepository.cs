@@ -8,5 +8,7 @@ namespace Library.API.Repository
         Task<Book> GetBookByIsbn(string ISBN);
         Task SaveBook(Book book);
         Task<Book> UpdateBook(Book book);
+
+        Task<Book> DeleteBook(string ISBN);
     }
 }

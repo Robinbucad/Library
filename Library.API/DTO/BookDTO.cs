@@ -13,6 +13,7 @@ namespace Library.API.DTO
 
         public BookDTO(Book book) 
         {
+            Id = book.Id.ToString();
             Title = book.Title;
             Description = book.Description;
             ISBN = book.ISBN;

@@ -11,7 +11,29 @@ namespace Library.UnitTest.Fixtures
 {
     public static class BooksFixture
     {
-        public static List<Book> GetListBooks() => new List<Book>
+        public static List<BookDTO> GetListBooksDTO() => new ()
+        {
+            new BookDTO
+            {
+                Title = "Libro 1",
+                Description = "Gran libro",
+                ISBN = "123"
+            },
+            new BookDTO
+            {
+                Title = "Libro 2",
+                Description = "Gran libro" ,
+                ISBN = "1234" 
+            },
+            new BookDTO
+            {
+                Title = "Libro 3",
+                Description = "Gran libro" ,
+                ISBN = "12345"
+            }
+        };
+
+        public static List<Book> GetListBooks() => new()
         {
             new Book
             {
@@ -23,7 +45,7 @@ namespace Library.UnitTest.Fixtures
             {
                 Title = "Libro 2",
                 Description = "Gran libro" ,
-                ISBN = "1234" 
+                ISBN = "1234"
             },
             new Book
             {

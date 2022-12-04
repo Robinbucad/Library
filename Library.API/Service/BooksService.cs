@@ -13,6 +13,13 @@ namespace Library.API.Service
             _mongoRepository = mongoRepository;
         }
 
+        public async Task<string> DeleteBook(string ISBN)
+        {
+            await _mongoRepository.DeleteBook(ISBN);
+
+            return "Book deleted succesfully";
+        }
+
         public async Task<List<BookDTO>> GetAllBooks()
         {
             List<Book> bookList = await _mongoRepository.GetAllBooks();
@@ -31,13 +38,24 @@ namespace Library.API.Service
         {
            
             Book book = await _mongoRepository.GetBookByIsbn(ISBN);
+            if(book == null)
+            {
+                throw new Exception("Book doesn't exist");
+            }
             return new BookDTO(book);
          
         }
 
         public async Task<BookDTO> SaveBook(BookDTO book)
         {
-             Book newBook = new Book(book);
+            Book checkBook = await _mongoRepository.GetBookByIsbn(book.ISBN);
+
+            if(checkBook != null) 
+            {
+                throw new Exception("Book already exist");
+            }
+
+            Book newBook = new(book);
              await _mongoRepository.SaveBook(newBook);
 
             return new BookDTO(newBook);
@@ -45,7 +63,13 @@ namespace Library.API.Service
 
         public async Task<BookDTO> UpdateBook(BookDTO book)
         {
-            Book updatedBook = new Book(book);
+            Book checkBook = await _mongoRepository.GetBookByIsbn(book.ISBN);
+
+            if (checkBook == null)
+            {
+                throw new Exception("Book doesn't exist");
+            }
+            Book updatedBook = new(book);
             await _mongoRepository.UpdateBook(updatedBook);
             return new BookDTO(updatedBook);
         }

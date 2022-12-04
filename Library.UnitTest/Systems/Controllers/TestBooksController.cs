@@ -17,11 +17,11 @@ namespace Library.UnitTest.Systems.Controllers
         {
             // Arrange
             var mockService = new Mock<IBookService>();
-            var mockRepo = new Mock<IMongoRepository>();
 
-            mockRepo
+
+            mockService
                 .Setup(r => r.GetAllBooks())
-                .ReturnsAsync(BooksFixture.GetListBooks());
+                .ReturnsAsync(BooksFixture.GetListBooksDTO());
 
             var sut = new BooksController(mockService.Object);
 
@@ -55,20 +55,18 @@ namespace Library.UnitTest.Systems.Controllers
         {
 
             // Arrange
-            string ISBN = "12356";
 
             var mockSerivce = new Mock<IBookService>();
-            var mockRepo = new Mock<IMongoRepository>();
 
             mockSerivce
-                .Setup(s => s.GetBookByIsbn(ISBN))
+                .Setup(s => s.GetBookByIsbn(It.IsAny<string>()))
                 .ReturnsAsync(BooksFixture.GetSingleBookDTO());
 
             var sut = new BooksController(mockSerivce.Object);
 
 
             // Act
-            var result =(OkObjectResult) await sut.GetBookByIsbn(ISBN);
+            var result =(OkObjectResult) await sut.GetBookByIsbn(It.IsAny<string>());
 
             // Assert
             result.StatusCode.Should().Be(200);
@@ -79,14 +77,13 @@ namespace Library.UnitTest.Systems.Controllers
         {
 
             // Arrange
-            string id = "638b4cb27a0";
 
             var mockSerivce = new Mock<IBookService>();
 
             var sut = new BooksController(mockSerivce.Object);
 
             // Act
-            var result = (NotFoundResult)await sut.GetBookByIsbn(id);
+            var result = (NotFoundResult)await sut.GetBookByIsbn(It.IsAny<string>());
 
             // Assert
             result.StatusCode.Should().Be(404);
@@ -99,7 +96,6 @@ namespace Library.UnitTest.Systems.Controllers
             // Arrange
             BookDTO book = BooksFixture.UpdateBookDTO();
             var mockService = new Mock<IBookService>();
-            var mockRepo = new Mock<IMongoRepository>();
 
             mockService
                 .Setup(s => s.GetBookByIsbn(book.ISBN))
@@ -128,6 +124,43 @@ namespace Library.UnitTest.Systems.Controllers
             var sut = new BooksController(mocKservice.Object);
             // Act
             var result = (NotFoundResult)await sut.PutBook(book);
+
+            // Assert
+            result.StatusCode.Should().Be(404);
+        }
+
+        [Fact]
+        public async Task DeleteBook_OnSuccess_ReturnsOk()
+        {
+            // Arrange
+     
+            BookDTO book = BooksFixture.UpdateBookDTO();
+
+            var mockService = new Mock<IBookService>();
+            mockService
+                .Setup(s => s.GetBookByIsbn(It.IsAny<string>()))
+                .ReturnsAsync(book);
+
+            var sut = new BooksController(mockService.Object);
+            // Act
+            var result = (OkObjectResult)await sut.DeleteBook(It.IsAny<string>());
+
+            // Assert
+            result.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task DeleteBook_OnError_Returns404()
+        {
+            // Arrange
+           
+            var mocKservice = new Mock<IBookService>();
+            mocKservice
+                .Setup(s => s.GetBookByIsbn(It.IsAny<string>()));
+
+            var sut = new BooksController(mocKservice.Object);
+            // Act
+            var result = (NotFoundResult)await sut.DeleteBook(It.IsAny<string>());
 
             // Assert
             result.StatusCode.Should().Be(404);

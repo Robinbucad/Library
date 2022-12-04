@@ -57,6 +57,18 @@ namespace Library.API.Controllers
             return NotFound();
             
         }
+
+        [HttpDelete("{ISBN}")]
+        public async Task<IActionResult> DeleteBook(string ISBN)
+        {
+            BookDTO checkBook = await _booksService.GetBookByIsbn(ISBN);
+            if (checkBook != null)
+            {
+                await _booksService.DeleteBook(ISBN);
+                return Ok("Book with ISBN " + ISBN + " deleted succesfully");
+            }
+            return NotFound();
+        }
        
        
     }

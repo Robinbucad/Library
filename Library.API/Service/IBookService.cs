@@ -13,5 +13,6 @@ namespace Library.API.Service
 
         Task<BookDTO> UpdateBook(BookDTO book);
 
+        Task<string> DeleteBook(string ISBN);
     }
 }

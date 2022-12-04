@@ -51,16 +51,16 @@ namespace Library.UnitTest.Systems.Controllers
         public async Task GetBookByIsbn_OnSuccess_ReturnsBook()
         {
             // Arrange
-            string id = "bookid";
+
    
             var mockRepo = new Mock<IMongoRepository>();
                 mockRepo
-                    .Setup(s => s.GetBookByIsbn(id))
+                    .Setup(s => s.GetBookByIsbn(It.IsAny<string>()))
                     .ReturnsAsync(BooksFixture.GetSingleBook());
 
             var sut = new BooksService(mockRepo.Object);
             // Act
-            var result = await sut.GetBookByIsbn(id);
+            var result = await sut.GetBookByIsbn(It.IsAny<string>());
 
 
             // Assert
@@ -93,6 +93,23 @@ namespace Library.UnitTest.Systems.Controllers
             Assert.Equal("1234", result.ISBN);
         }
 
+        [Fact]
+        public async Task DeleteBook_OnSuccess_ReturnsNull()
+        {
+            // Arrange
+            var mockRepo = new Mock<IMongoRepository>();
+            mockRepo
+                .Setup(s => s.DeleteBook(It.IsAny<string>()));
+ 
+            var sut = new BooksService(mockRepo.Object);
+            // Act
+            var result =await sut.DeleteBook(It.IsAny<string>());
+
+            // Assert
+            Assert.Equal("Book deleted succesfully", result );
+        }
        
     }
+
+
 }

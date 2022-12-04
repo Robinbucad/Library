@@ -39,5 +39,11 @@ namespace Library.API.Repository
 
             return  await _booksCollection.FindOneAndUpdateAsync(filter, update);
         }
+
+        public async Task<Book> DeleteBook(string ISBN)
+        {
+            return await _booksCollection.FindOneAndDeleteAsync<Book>(b => b.ISBN.Equals(ISBN));
+        }
+
     }
 }
