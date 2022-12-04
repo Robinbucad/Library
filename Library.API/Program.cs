@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
-builder.Services.AddSingleton<MongoDBRepository>();
-builder.Services.AddTransient<IBookService,BooksService>();
+builder.Services.AddScoped<IMongoRepository,MongoDBRepository>();
+builder.Services.AddScoped<IBookService,BooksService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

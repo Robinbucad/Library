@@ -5,6 +5,8 @@ using FluentAssertions;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
 using Library.API.Model;
+using Library.API.Repository;
+using Library.API.DTO;
 
 namespace Library.UnitTest.Systems.Controllers
 {
@@ -15,7 +17,9 @@ namespace Library.UnitTest.Systems.Controllers
         {
             // Arrange
             var mockService = new Mock<IBookService>();
-            mockService
+            var mockRepo = new Mock<IMongoRepository>();
+
+            mockRepo
                 .Setup(r => r.GetAllBooks())
                 .ReturnsAsync(BooksFixture.GetListBooks());
 
@@ -34,9 +38,10 @@ namespace Library.UnitTest.Systems.Controllers
         {
             // Arrange
             var mockService = new Mock<IBookService> ();
+            
             var sut = new BooksController(mockService.Object);
             // Act
-            var book = BooksFixture.GetSingleBook();
+            var book = BooksFixture.PostBook();
            ;
             var result =(CreatedResult) await sut.PostBook(book);
 
@@ -46,28 +51,31 @@ namespace Library.UnitTest.Systems.Controllers
 
 
         [Fact]
-        public async Task GetBookByIdsbn_OnSuccess_Resturn200()
+        public async Task GetBookByIsbn_OnSuccess_Resturn200()
         {
 
             // Arrange
-            string ISBN = "123";
+            string ISBN = "12356";
 
             var mockSerivce = new Mock<IBookService>();
-            mockSerivce.Setup(s => s.GetBookByIsbn(ISBN))
-                .ReturnsAsync(BooksFixture.UpdateBook());
+            var mockRepo = new Mock<IMongoRepository>();
+
+            mockSerivce
+                .Setup(s => s.GetBookByIsbn(ISBN))
+                .ReturnsAsync(BooksFixture.GetSingleBookDTO());
 
             var sut = new BooksController(mockSerivce.Object);
 
 
             // Act
-            var result =(OkObjectResult) await sut.GetBookById(ISBN);
+            var result =(OkObjectResult) await sut.GetBookByIsbn(ISBN);
 
             // Assert
             result.StatusCode.Should().Be(200);
         }
 
         [Fact]
-        public async Task GetBookById_OnError_Returns404() 
+        public async Task GetBookByIsbn_OnError_Returns404() 
         {
 
             // Arrange
@@ -78,24 +86,27 @@ namespace Library.UnitTest.Systems.Controllers
             var sut = new BooksController(mockSerivce.Object);
 
             // Act
-            var result = (NotFoundResult)await sut.GetBookById(id);
+            var result = (NotFoundResult)await sut.GetBookByIsbn(id);
 
             // Assert
             result.StatusCode.Should().Be(404);
 
         }
-
+        
         [Fact]
         public async Task PutBook_OnSuccess_Returns200()
         {
             // Arrange
-            Book book = BooksFixture.UpdateBook();
-            var mocKservice = new Mock<IBookService>();
-            mocKservice
+            BookDTO book = BooksFixture.UpdateBookDTO();
+            var mockService = new Mock<IBookService>();
+            var mockRepo = new Mock<IMongoRepository>();
+
+            mockService
                 .Setup(s => s.GetBookByIsbn(book.ISBN))
                 .ReturnsAsync(book);
 
-            var sut = new BooksController(mocKservice.Object);
+
+            var sut = new BooksController(mockService.Object);
             // Act
             var result = (OkObjectResult) await sut.PutBook(book);
 
@@ -103,12 +114,13 @@ namespace Library.UnitTest.Systems.Controllers
             result.StatusCode.Should().Be(200);
         
         }
-
+        
+        
         [Fact]
         public async Task PutBook_IfBookNoExists_Returns404()
         {
             // Arrange
-            Book book = BooksFixture.GetSingleBook();
+            BookDTO book = BooksFixture.GetSingleBookDTO();
             var mocKservice = new Mock<IBookService>();
             mocKservice
                 .Setup(s => s.GetBookByIsbn(book.ISBN));
@@ -121,6 +133,6 @@ namespace Library.UnitTest.Systems.Controllers
             result.StatusCode.Should().Be(404);
         }
 
-
+        
     }
 }

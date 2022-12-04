@@ -1,3 +1,4 @@
+using Library.API.DTO;
 using Library.API.Model;
 using Library.API.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +19,16 @@ namespace Library.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBooks()
         {
-            List<Book> books = await _booksService.GetAllBooks();
+            List<BookDTO> books = await _booksService.GetAllBooks();
             return Ok(books);
    
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBookById(string id)
+        [HttpGet("{isbn}")]
+        public async Task<IActionResult> GetBookByIsbn(string isbn)
         {
 
-            Book book = await _booksService.GetBookByIsbn(id);
+            BookDTO book = await _booksService.GetBookByIsbn(isbn);
             if(book == null)
             {
                 return NotFound();
@@ -36,27 +37,27 @@ namespace Library.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostBook([FromBody] Book book)
+        public async Task<IActionResult> PostBook([FromBody] BookDTO book)
         {
             await _booksService.SaveBook(book);
             return Created("Created", book);
-        }
+        }   
 
         [HttpPut]
-        public async Task<IActionResult> PutBook([FromBody] Book book)
+        public async Task<IActionResult> PutBook([FromBody] BookDTO book)
         {
             
-            Book newBook =await _booksService.UpdateBook(book);
-            Book checkBook = await _booksService.GetBookByIsbn(book.ISBN);
+            BookDTO checkBook = await _booksService.GetBookByIsbn(book.ISBN);
 
             if(checkBook != null)
             {
+                BookDTO newBook = await _booksService.UpdateBook(book);
                 return Ok(newBook);
             }
             return NotFound();
             
         }
-
+       
        
     }
 }

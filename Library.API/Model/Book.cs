@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Library.API.DTO;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Library.API.Model
@@ -12,6 +13,13 @@ namespace Library.API.Model
 
         public string ISBN { get; set; } = string.Empty;
 
+       public Book(BookDTO bookDTO) 
+        {
+            Title = bookDTO.Title;
+            Description = bookDTO.Description;
+            ISBN= bookDTO.ISBN;
+        }
 
+        public Book() { }
     }
 }

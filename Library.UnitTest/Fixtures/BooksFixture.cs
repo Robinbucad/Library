@@ -1,4 +1,5 @@
-﻿using Library.API.Model;
+﻿using Library.API.DTO;
+using Library.API.Model;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,14 @@ namespace Library.UnitTest.Fixtures
                 ISBN = "12345"
             }
         };
+        public static BookDTO GetSingleBookDTO() => new BookDTO
+        {
+            Title = "Libro test",
+            Description = "Gran libro test",
+            ISBN = "12356"
+
+        };
+
         public static Book GetSingleBook() => new Book
         {
             Title = "Libro test",
@@ -39,7 +48,22 @@ namespace Library.UnitTest.Fixtures
 
         };
 
+        public static BookDTO PostBook() => new()
+        {
+            Title = "Libro test post",
+            Description = "Gran libro test post",
+            ISBN = "12356"
+
+        };
+
         public static Book UpdateBook() => new Book
+        {
+            Title = "Libro update",
+            Description = "Gran libro",
+            ISBN = "1234"
+        };
+
+        public static BookDTO UpdateBookDTO() => new BookDTO
         {
             Title = "Libro update",
             Description = "Gran libro",

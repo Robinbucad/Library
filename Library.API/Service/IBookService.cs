@@ -1,16 +1,17 @@
-﻿using Library.API.Model;
+﻿using Library.API.DTO;
+using Library.API.Model;
 
 namespace Library.API.Service
 {
     public interface IBookService
     {
-        Task<List<Book>> GetAllBooks();
+        Task<List<BookDTO>> GetAllBooks();
 
-        Task SaveBook(Book book);
+        Task<BookDTO> SaveBook(BookDTO book);
 
-        Task<Book> GetBookByIsbn(string ISBN);
+        Task<BookDTO> GetBookByIsbn(string ISBN);
 
-        Task<Book> UpdateBook(Book book);
+        Task<BookDTO> UpdateBook(BookDTO book);
 
     }
 }

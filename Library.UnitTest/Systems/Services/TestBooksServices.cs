@@ -1,4 +1,5 @@
 using Library.API.Controllers;
+using Library.API.DTO;
 using Library.API.Model;
 using Library.API.Repository;
 using Library.API.Service;
@@ -15,64 +16,66 @@ namespace Library.UnitTest.Systems.Controllers
         public async Task GetAllBooks_OnSuccess_ReturnAllBooks()
         {
             // Arrange
-            var mockService = new Mock<IMongoRepository>();
-            mockService
-                .Setup(r => r.GetAllBooks())
+            var mockRepo = new Mock<IMongoRepository>();
+            mockRepo
+                .Setup(s => s.GetAllBooks())
                 .ReturnsAsync(BooksFixture.GetListBooks());
 
-            var sut = new BooksService(mockService.Object);
+            var sut = new BooksService(mockRepo.Object);
 
             // Act
-            var result =await sut.GetAllBooks();
-
+            List<BookDTO> books =await sut.GetAllBooks();
             // Assert
-
-            Assert.Equal(3,result.Count);
-            
+        
+            Assert.Equal(3,books.Count);
         }
 
         [Fact]
-        public void Post_OnSucess_ReturnsNotNull()
+        public async Task Post_OnSucess_ReturnsNotNull()
         {
             // Arrange
-            var mockService = new Mock<IMongoRepository>();
+            var mockRepo = new Mock<IMongoRepository>();
 
-            var sut = new BooksService(mockService.Object);
+            var sut = new BooksService(mockRepo.Object);
             // Act
-            var book = BooksFixture.GetSingleBook();
-            var result = sut.SaveBook(book);
+            var book = BooksFixture.PostBook();
+            var result =await sut.SaveBook(book);
             // Assert
             
-            Assert.NotNull(result);
+            Assert.Equal("Libro test post", result.Title);
+            Assert.Equal("Gran libro test post", result.Description);
+            Assert.Equal("12356", result.ISBN);
         }
 
         [Fact]
         public async Task GetBookByIsbn_OnSuccess_ReturnsBook()
         {
             // Arrange
-            string id = "638b4cb27a08b1cb927eb3ab";
+            string id = "bookid";
    
-            var mockService = new Mock<IMongoRepository>();
-                mockService
+            var mockRepo = new Mock<IMongoRepository>();
+                mockRepo
                     .Setup(s => s.GetBookByIsbn(id))
                     .ReturnsAsync(BooksFixture.GetSingleBook());
 
-            var sut = new BooksService(mockService.Object);
+            var sut = new BooksService(mockRepo.Object);
             // Act
             var result = await sut.GetBookByIsbn(id);
 
 
             // Assert
-            Assert.Equal(id, id);
+
             Assert.Equal("Libro test", result.Title);
+            Assert.Equal("Gran libro test", result.Description);
+            Assert.Equal("12356", result.ISBN);
         }
 
         [Fact]
         public async Task UpdateBook_OnSuccess_ReturnsUpdatedBook()
         {
             // Arrange
+            BookDTO bookDTO = BooksFixture.UpdateBookDTO();
             Book book = BooksFixture.UpdateBook();
-
 
             var mockService = new Mock<IMongoRepository>();
             mockService
@@ -82,11 +85,12 @@ namespace Library.UnitTest.Systems.Controllers
             var sut = new BooksService(mockService.Object);
 
             // Act
-            var result = await sut.UpdateBook(book);
+            var result = await sut.UpdateBook(bookDTO);
 
             // Result
             Assert.Equal("Libro update", result.Title);
             Assert.Equal("Gran libro", result.Description);
+            Assert.Equal("1234", result.ISBN);
         }
 
        

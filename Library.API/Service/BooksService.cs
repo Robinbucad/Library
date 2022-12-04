@@ -1,4 +1,5 @@
-﻿using Library.API.Model;
+﻿using Library.API.DTO;
+using Library.API.Model;
 using Library.API.Repository;
 
 namespace Library.API.Service
@@ -12,26 +13,41 @@ namespace Library.API.Service
             _mongoRepository = mongoRepository;
         }
 
-        public Task<List<Book>> GetAllBooks()
+        public async Task<List<BookDTO>> GetAllBooks()
         {
-            return _mongoRepository.GetAllBooks();
+            List<Book> bookList = await _mongoRepository.GetAllBooks();
+            List<BookDTO> booksDTO= new();
+
+            foreach (Book book in bookList)
+            {
+                BookDTO newBookDTO = new(book);
+                booksDTO.Add(newBookDTO);
+            }
+
+            return booksDTO;
         }
 
-        public async Task<Book> GetBookByIsbn(string ISBN)
+        public async Task<BookDTO> GetBookByIsbn(string ISBN)
         {
-            return await _mongoRepository.GetBookByIsbn(ISBN);
+           
+            Book book = await _mongoRepository.GetBookByIsbn(ISBN);
+            return new BookDTO(book);
          
-            
         }
 
-        public Task SaveBook(Book book)
+        public async Task<BookDTO> SaveBook(BookDTO book)
         {
-            return _mongoRepository.SaveBook(book);
+             Book newBook = new Book(book);
+             await _mongoRepository.SaveBook(newBook);
+
+            return new BookDTO(newBook);
         }
 
-        public Task<Book> UpdateBook(Book book)
+        public async Task<BookDTO> UpdateBook(BookDTO book)
         {
-            return _mongoRepository.UpdateBook(book);
+            Book updatedBook = new Book(book);
+            await _mongoRepository.UpdateBook(updatedBook);
+            return new BookDTO(updatedBook);
         }
 
     }
